@@ -17,15 +17,19 @@ uint8_t score = 0;
 int current_round = 0;
 int game_running = NOT_RUNNING;
 
-int blinker_sequence[ROUND_COUNT];
+int game_difficulty;
+int round_count;
 
-int starting_buttons_pressed[2];
+int *blinker_sequence;
+
+int starting_buttons_pressed[BUTTON_COUNT];
 
 /*
  * Start a new game
  */
-void game_start()
+void game_start(int start_status)
 {
+	/* Set seed for rand session */
 	srand(eeprom_get_next_seed());
 	
 	/* Intro score blinking */
@@ -38,7 +42,21 @@ void game_start()
 		
 	score = 0;
 	current_round = 0;
+	
+	game_difficulty = start_status;
 
+	switch (game_difficulty) {
+		case EASY:
+			round_count = EASY_ROUND_COUNT;
+			break;
+		case HARD:
+			round_count = HARD_ROUND_COUNT;
+			break;			
+	}
+	
+	free(blinker_sequence);
+	blinker_sequence = (int *) malloc(round_count);
+	
 	led_counter_set(score);
 	
 	game_running = RUNNING;
@@ -65,7 +83,15 @@ int game_is_running()
  */
 int game_is_ready_to_start()
 {
-	return starting_buttons_pressed[0] && starting_buttons_pressed[1];
+	if (starting_buttons_pressed[EASY_STARTING_BUTTON_1] 
+	    && starting_buttons_pressed[EASY_STARTING_BUTTON_2]) {
+		return READY_EASY;
+	} else if (starting_buttons_pressed[HARD_STARTING_BUTTON_1]
+			   && starting_buttons_pressed[HARD_STARTING_BUTTON_2]) {
+		return READY_HARD;			   
+	}
+	
+	return NOT_READY;
 }
 
 /*
@@ -131,11 +157,7 @@ void game_blink_sequence(int *sequence, int len)
 void button_pressed(int button)
 {
 	if (!game_is_running()) {
-		if (button == STARTING_BUTTON_1)
-			starting_buttons_pressed[0] = 1;
-		else if (button == STARTING_BUTTON_2)
-			starting_buttons_pressed[1] = 1;
-			
+		starting_buttons_pressed[button] = 1;		
 		return;
 	}
 }
@@ -146,11 +168,7 @@ void button_pressed(int button)
 void button_released(int button)
 {
 	if (!game_is_running()) {
-		if (button == STARTING_BUTTON_1)
-			starting_buttons_pressed[0] = 0;
-		else if (button == STARTING_BUTTON_2)
-			starting_buttons_pressed[1] = 0;
-			
+		starting_buttons_pressed[button] = 0;
 		return;
 	}
 }

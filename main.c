@@ -26,20 +26,20 @@ void setup()
 int main(void)
 {
 	setup();
-	
-	// for debugging	
-	game_start();
 
-	while (1)
-	{
-		if (game_is_running() == 0)
-		{
-			if (game_is_ready_to_start()) {
-				_delay_ms(2000);
-				if (game_is_ready_to_start())
-				game_start();
-			}
+	while (1) {	
+		if(game_is_running() == NOT_RUNNING) {
+			int start_status = game_is_ready_to_start();
+			
+			if (start_status == NOT_READY)
+				continue;
+				
+			_delay_ms(BUTTON_START_TIMEOUT);
+			
+			if (start_status == game_is_ready_to_start())
+				game_start(start_status);
 		}
+		
 	}
 
 }
