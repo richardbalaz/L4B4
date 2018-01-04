@@ -42,6 +42,7 @@ SUBDIRS :=  \
 C_SRCS +=  \
 ../game.c \
 ../main.c \
+../music.c \
 ../peripherals/button.c \
 ../peripherals/eeprom.c \
 ../peripherals/led.c \
@@ -57,6 +58,7 @@ ASM_SRCS +=
 OBJS +=  \
 game.o \
 main.o \
+music.o \
 peripherals/button.o \
 peripherals/eeprom.o \
 peripherals/led.o \
@@ -65,6 +67,7 @@ peripherals/speaker.o
 OBJS_AS_ARGS +=  \
 game.o \
 main.o \
+music.o \
 peripherals/button.o \
 peripherals/eeprom.o \
 peripherals/led.o \
@@ -73,6 +76,7 @@ peripherals/speaker.o
 C_DEPS +=  \
 game.d \
 main.d \
+music.d \
 peripherals/button.d \
 peripherals/eeprom.d \
 peripherals/led.d \
@@ -81,6 +85,7 @@ peripherals/speaker.d
 C_DEPS_AS_ARGS +=  \
 game.d \
 main.d \
+music.d \
 peripherals/button.d \
 peripherals/eeprom.d \
 peripherals/led.d \
@@ -100,6 +105,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

@@ -36,10 +36,18 @@ int main(void)
 				
 			_delay_ms(BUTTON_START_TIMEOUT);
 			
-			if (start_status == game_is_ready_to_start())
-				game_start(start_status);
-		}
-		
+			/* Check if start status is ready even after timeout */
+			if (start_status == game_is_ready_to_start()) {
+				switch (start_status) {
+					case READY_EASY:
+						game_start(EASY);
+						break;
+					case READY_HARD:
+						game_start(HARD);
+						break;
+				}
+			}
+		}		
 	}
 
 }

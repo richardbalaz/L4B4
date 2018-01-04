@@ -158,7 +158,16 @@
     <Compile Include="include\mcu.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="include\music.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="include\music_songs.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="main.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="music.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="peripherals\button.c">

@@ -25,7 +25,7 @@ enum game_status {
 	NOT_RUNNING,
 	RUNNING,
 	WON,
-	GAME_OVER	
+	GAME_OVER
 };
 
 enum game_difficulty {
@@ -33,10 +33,11 @@ enum game_difficulty {
 	HARD,
 };
 
+
 enum game_start_status {
 	READY_EASY,
 	READY_HARD,
-	NOT_READY	
+	NOT_READY
 };
 
 void button_pressed(int button);

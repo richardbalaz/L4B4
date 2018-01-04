@@ -1,5 +1,7 @@
 ﻿#include "include/mcu.h"
 #include "include/game.h"
+#include "include/music.h"
+#include "include/music_songs.h"
 
 #include <stdlib.h>
 
@@ -13,22 +15,25 @@
 #include "peripherals/include/speaker.h"
 #include "peripherals/include/eeprom.h"
 
-uint8_t score = 0;
-int current_round = 0;
 int game_running = NOT_RUNNING;
-
 int game_difficulty;
+int game_score;
+
+int round_current;
 int round_count;
 
-int *blinker_sequence;
+int *led_sequence;
+int *button_sequence;
 
-int starting_buttons_pressed[BUTTON_COUNT];
+int starting_buttons_state[BUTTON_COUNT];
 
 /*
  * Start a new game
  */
-void game_start(int start_status)
+void game_start(int difficulty)
 {
+	cli();
+	
 	/* Set seed for rand session */
 	srand(eeprom_get_next_seed());
 	
@@ -39,13 +44,14 @@ void game_start(int start_status)
 		led_counter_set(0);
 		_delay_ms(600);
 	}
-		
-	score = 0;
-	current_round = 0;
 	
-	game_difficulty = start_status;
+	/* Reset variables */
+	game_score = 0;
+	round_current = 0;
+	
+	game_difficulty = difficulty;
 
-	switch (game_difficulty) {
+	switch (difficulty) {
 		case EASY:
 			round_count = EASY_ROUND_COUNT;
 			break;
@@ -54,10 +60,13 @@ void game_start(int start_status)
 			break;			
 	}
 	
-	free(blinker_sequence);
-	blinker_sequence = (int *) malloc(round_count);
+	free(led_sequence);
+	free(button_sequence);
 	
-	led_counter_set(score);
+	led_sequence = (int *) malloc(round_count);
+	button_sequence = (int *) malloc(round_count);
+	
+	led_counter_set(game_score);
 	
 	game_running = RUNNING;
 	
@@ -83,11 +92,11 @@ int game_is_running()
  */
 int game_is_ready_to_start()
 {
-	if (starting_buttons_pressed[EASY_STARTING_BUTTON_1] 
-	    && starting_buttons_pressed[EASY_STARTING_BUTTON_2]) {
+	if (starting_buttons_state[EASY_STARTING_BUTTON_1] 
+	    && starting_buttons_state[EASY_STARTING_BUTTON_2]) {
 		return READY_EASY;
-	} else if (starting_buttons_pressed[HARD_STARTING_BUTTON_1]
-			   && starting_buttons_pressed[HARD_STARTING_BUTTON_2]) {
+	} else if (starting_buttons_state[HARD_STARTING_BUTTON_1]
+			   && starting_buttons_state[HARD_STARTING_BUTTON_2]) {
 		return READY_HARD;			   
 	}
 	
@@ -103,28 +112,13 @@ void game_next_round()
 	
 	_delay_ms(1000);
 	
-	current_round++;
+	round_current++;
 	
-	game_generate_sequence(blinker_sequence, current_round);
-	game_blink_sequence(blinker_sequence, current_round);		
-	
-	// maybe some sound? or disable last delay from blinking
-	speaker_generate_tone(277L, 350L);
-	speaker_generate_tone(369L, 350L);
-	speaker_generate_tone(415L, 350L);
-	speaker_generate_tone(440L, 350L);
-	speaker_generate_tone(415L, 350L);
-	speaker_generate_tone(369L, 350L);
-	speaker_generate_tone(293L, 800L);
-	_delay_ms(350);
-	speaker_generate_tone(293L, 350L);
-	speaker_generate_tone(369L, 350L);
-	speaker_generate_tone(415L, 350L);
-	speaker_generate_tone(440L, 350L);
-	speaker_generate_tone(415L, 350L);
-	speaker_generate_tone(369L, 350L);
-	speaker_generate_tone(277L, 800L);
-
+	game_generate_sequence(led_sequence, round_current);
+	game_blink_sequence(led_sequence, round_current);		
+		
+	music_play(music_new_game, MUSIC_NEW_GAME_LEN);
+	music_play(music_la_la_land, MUSIC_LA_LA_LAND_LEN);
 	
 	sei();
 }
@@ -157,7 +151,7 @@ void game_blink_sequence(int *sequence, int len)
 void button_pressed(int button)
 {
 	if (!game_is_running()) {
-		starting_buttons_pressed[button] = 1;		
+		starting_buttons_state[button] = 1;		
 		return;
 	}
 }
@@ -168,7 +162,7 @@ void button_pressed(int button)
 void button_released(int button)
 {
 	if (!game_is_running()) {
-		starting_buttons_pressed[button] = 0;
+		starting_buttons_state[button] = 0;
 		return;
 	}
 }

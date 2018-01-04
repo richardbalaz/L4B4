@@ -6,6 +6,8 @@ game.c
 
 main.c
 
+music.c
+
 peripherals\button.c
 
 peripherals\eeprom.c
