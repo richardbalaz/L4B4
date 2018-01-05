@@ -13,21 +13,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  00000d40  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000190  00000000  00000000  00000d7c  2**0
+  5 .debug_aranges 00000198  00000000  00000000  00000d7c  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00003203  00000000  00000000  00000f0c  2**0
+  6 .debug_info   00003283  00000000  00000000  00000f14  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00001fdd  00000000  00000000  0000410f  2**0
+  7 .debug_abbrev 00001ff9  00000000  00000000  00004197  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000117a  00000000  00000000  000060ec  2**0
+  8 .debug_line   000011ed  00000000  00000000  00006190  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000003f8  00000000  00000000  00007268  2**2
+  9 .debug_frame  00000408  00000000  00000000  00007380  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00001370  00000000  00000000  00007660  2**0
+ 10 .debug_str    00001389  00000000  00000000  00007788  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000fce  00000000  00000000  000089d0  2**0
+ 11 .debug_loc    0000106c  00000000  00000000  00008b11  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000140  00000000  00000000  0000999e  2**0
+ 12 .debug_ranges 00000148  00000000  00000000  00009b7d  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -342,12 +342,12 @@ void game_next_round()
  1ae:	90 91 35 3e 	lds	r25, 0x3E35	; 0x803e35 <led_sequence+0x1>
  1b2:	ac df       	rcall	.-168    	; 0x10c <game_blink_sequence>
 		
-	music_play(song_new_game, SONG_NEW_GAME_LEN);
+	util_music_play(song_new_game, SONG_NEW_GAME_LEN);
  1b4:	69 e0       	ldi	r22, 0x09	; 9
  1b6:	70 e0       	ldi	r23, 0x00	; 0
  1b8:	8a e0       	ldi	r24, 0x0A	; 10
  1ba:	9e e3       	ldi	r25, 0x3E	; 62
- 1bc:	04 d3       	rcall	.+1544   	; 0x7c6 <music_play>
+ 1bc:	04 d3       	rcall	.+1544   	; 0x7c6 <util_music_play>
 		
 	sei();
  1be:	78 94       	sei
@@ -1569,12 +1569,12 @@ void speaker_generate_tone(long frequency, long duration)
  7c2:	4f 90       	pop	r4
  7c4:	08 95       	ret
 
-000007c6 <music_play>:
-#include <util/delay.h>
+000007c6 <util_music_play>:
 
-#include "peripherals/include/speaker.h"
-
-void music_play(int music[][2], int len)
+/*
+ * Play frequency durations out from speaker
+ */
+void util_music_play(int music[][2], int len)
 {
  7c6:	cf 92       	push	r12
  7c8:	df 92       	push	r13
@@ -1587,7 +1587,7 @@ void music_play(int music[][2], int len)
 	for (int i = 0; i < len; i++) {
  7d6:	16 16       	cp	r1, r22
  7d8:	17 06       	cpc	r1, r23
- 7da:	ac f5       	brge	.+106    	; 0x846 <music_play+0x80>
+ 7da:	ac f5       	brge	.+106    	; 0x846 <util_music_play+0x80>
  7dc:	6b 01       	movw	r12, r22
  7de:	c8 2f       	mov	r28, r24
  7e0:	d9 2f       	mov	r29, r25
@@ -1595,14 +1595,14 @@ void music_play(int music[][2], int len)
  7e4:	f1 2c       	mov	r15, r1
 		if (music[i][FREQUENCY] > 0) {
 			speaker_generate_tone(music[i][FREQUENCY], music[i][DURATION]);
-			} else {
+		} else {
 			for (int j = 0; j < (music[i][DURATION] / 10); j++)
  7e6:	0a e0       	ldi	r16, 0x0A	; 10
  7e8:	10 e0       	ldi	r17, 0x00	; 0
  7ea:	fe 01       	movw	r30, r28
-#include "peripherals/include/speaker.h"
-
-void music_play(int music[][2], int len)
+ * Play frequency durations out from speaker
+ */
+void util_music_play(int music[][2], int len)
 {
 	for (int i = 0; i < len; i++) {
 		if (music[i][FREQUENCY] > 0) {
@@ -1610,17 +1610,17 @@ void music_play(int music[][2], int len)
  7ee:	79 81       	ldd	r23, Y+1	; 0x01
  7f0:	16 16       	cp	r1, r22
  7f2:	17 06       	cpc	r1, r23
- 7f4:	2c f0       	brlt	.+10     	; 0x800 <music_play+0x3a>
+ 7f4:	2c f0       	brlt	.+10     	; 0x800 <util_music_play+0x3a>
 			speaker_generate_tone(music[i][FREQUENCY], music[i][DURATION]);
-			} else {
+		} else {
 			for (int j = 0; j < (music[i][DURATION] / 10); j++)
  7f6:	8a 81       	ldd	r24, Y+2	; 0x02
  7f8:	9b 81       	ldd	r25, Y+3	; 0x03
  7fa:	0a 97       	sbiw	r24, 0x0a	; 10
- 7fc:	6c f4       	brge	.+26     	; 0x818 <music_play+0x52>
- 7fe:	1c c0       	rjmp	.+56     	; 0x838 <music_play+0x72>
-
-void music_play(int music[][2], int len)
+ 7fc:	6c f4       	brge	.+26     	; 0x818 <util_music_play+0x52>
+ 7fe:	1c c0       	rjmp	.+56     	; 0x838 <util_music_play+0x72>
+ */
+void util_music_play(int music[][2], int len)
 {
 	for (int i = 0; i < len; i++) {
 		if (music[i][FREQUENCY] > 0) {
@@ -1636,15 +1636,15 @@ void music_play(int music[][2], int len)
  810:	88 0b       	sbc	r24, r24
  812:	99 0b       	sbc	r25, r25
  814:	61 df       	rcall	.-318    	; 0x6d8 <speaker_generate_tone>
- 816:	10 c0       	rjmp	.+32     	; 0x838 <music_play+0x72>
-			} else {
+ 816:	10 c0       	rjmp	.+32     	; 0x838 <util_music_play+0x72>
+		} else {
 			for (int j = 0; j < (music[i][DURATION] / 10); j++)
  818:	20 e0       	ldi	r18, 0x00	; 0
  81a:	30 e0       	ldi	r19, 0x00	; 0
  81c:	8d e8       	ldi	r24, 0x8D	; 141
  81e:	90 e2       	ldi	r25, 0x20	; 32
  820:	01 97       	sbiw	r24, 0x01	; 1
- 822:	f1 f7       	brne	.-4      	; 0x820 <music_play+0x5a>
+ 822:	f1 f7       	brne	.-4      	; 0x820 <util_music_play+0x5a>
  824:	00 00       	nop
  826:	2f 5f       	subi	r18, 0xFF	; 255
  828:	3f 4f       	sbci	r19, 0xFF	; 255
@@ -1654,11 +1654,11 @@ void music_play(int music[][2], int len)
  830:	13 d0       	rcall	.+38     	; 0x858 <__divmodhi4>
  832:	26 17       	cp	r18, r22
  834:	37 07       	cpc	r19, r23
- 836:	94 f3       	brlt	.-28     	; 0x81c <music_play+0x56>
-
-#include "peripherals/include/speaker.h"
-
-void music_play(int music[][2], int len)
+ 836:	94 f3       	brlt	.-28     	; 0x81c <util_music_play+0x56>
+/*
+ * Play frequency durations out from speaker
+ */
+void util_music_play(int music[][2], int len)
 {
 	for (int i = 0; i < len; i++) {
  838:	9f ef       	ldi	r25, 0xFF	; 255
@@ -1667,8 +1667,8 @@ void music_play(int music[][2], int len)
  83e:	24 96       	adiw	r28, 0x04	; 4
  840:	ce 14       	cp	r12, r14
  842:	df 04       	cpc	r13, r15
- 844:	91 f6       	brne	.-92     	; 0x7ea <music_play+0x24>
-			} else {
+ 844:	91 f6       	brne	.-92     	; 0x7ea <util_music_play+0x24>
+		} else {
 			for (int j = 0; j < (music[i][DURATION] / 10); j++)
 			_delay_ms(10);
 		}

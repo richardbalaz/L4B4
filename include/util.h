@@ -3,13 +3,15 @@
 
 /* Music util */
 
-void music_play(int music[][2], int len);
+void util_music_play(int music[][2], int len);
 
-enum music_composition {
+enum util_music_composition {
 	FREQUENCY,
 	DURATION
 };
 
+/* LED/Button util */
 
+int util_button_to_blinker(int button);
 
 #endif /* UTIL_H_ */

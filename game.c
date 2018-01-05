@@ -117,7 +117,7 @@ void game_next_round()
 	game_generate_sequence(led_sequence, round_current);
 	game_blink_sequence(led_sequence, round_current);		
 		
-	music_play(song_new_game, SONG_NEW_GAME_LEN);
+	util_music_play(song_new_game, SONG_NEW_GAME_LEN);
 		
 	sei();
 }
