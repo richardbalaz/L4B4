@@ -1,8 +1,8 @@
 ﻿#ifndef SONGS_H_
 #define SONGS_H_
 
-#define SONG_NEW_GAME_LEN 9
-int song_new_game[SONG_NEW_GAME_LEN][2] = {
+#define SONG_NEW_ROUND_LEN 9
+int song_new_round[SONG_NEW_ROUND_LEN][2] = {
 	{261, 250},
 	{349, 125},
 	{440, 125},
@@ -12,6 +12,14 @@ int song_new_game[SONG_NEW_GAME_LEN][2] = {
 	{0, 125},
 	{0, 250},
 	{523, 125},
+};
+
+#define SONG_GAME_OVER_LEN 9
+int song_game_over[SONG_GAME_OVER_LEN][2] = {
+	{233, 500},
+	{184, 500},
+	{155, 500},
+	{116, 1200},
 };
 
 #define SONG_LA_LA_LAND_LEN 15

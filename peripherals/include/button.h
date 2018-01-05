@@ -40,6 +40,8 @@ enum interrupt_ports {
 };
 
 void button_init();
+void button_interrupts_enable();
+void button_interrupts_disable();
 
 int button_is_pressed(int button);
 

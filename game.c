@@ -22,8 +22,9 @@ int game_score;
 int round_current;
 int round_count;
 
-int *led_sequence;
-int *button_sequence;
+int blinker_sequence[HARD_ROUND_COUNT];
+int button_sequence[HARD_ROUND_COUNT];
+int sequence_ptr;
 
 int starting_buttons_state[BUTTON_COUNT];
 
@@ -32,7 +33,7 @@ int starting_buttons_state[BUTTON_COUNT];
  */
 void game_start(int difficulty)
 {
-	cli();
+	button_interrupts_disable();
 	
 	/* Set seed for rand session */
 	srand(eeprom_get_next_seed());
@@ -46,6 +47,7 @@ void game_start(int difficulty)
 	}
 	
 	/* Reset variables */
+	game_running = RUNNING;
 	game_score = 0;
 	round_current = 0;
 	
@@ -60,15 +62,12 @@ void game_start(int difficulty)
 			break;			
 	}
 	
-	free(led_sequence);
-	free(button_sequence);
-	
-	led_sequence = (int *) malloc(round_count);
-	button_sequence = (int *) malloc(round_count);
+	//free(blinker_sequence);		
+	//blinker_sequence = (int *) malloc(round_count);
 	
 	led_counter_set(game_score);
 	
-	game_running = RUNNING;
+	game_generate_sequence(blinker_sequence, round_count);
 	
 	game_next_round();
 	
@@ -108,18 +107,36 @@ int game_is_ready_to_start()
  */
 void game_next_round()
 {
-	cli();
+	button_interrupts_disable();
 	
 	_delay_ms(1000);
 	
 	round_current++;
-	
-	game_generate_sequence(led_sequence, round_current);
-	game_blink_sequence(led_sequence, round_current);		
+
+	//button_sequence = (int *) realloc(button_sequence, round_current);
+	sequence_ptr = 0;
+
+	game_blink_sequence(blinker_sequence, round_current);		
 		
-	util_music_play(song_new_game, SONG_NEW_GAME_LEN);
-		
-	sei();
+	util_music_play(song_new_round, SONG_NEW_ROUND_LEN);
+
+	button_interrupts_enable();
+}
+
+/*
+ * End the game as winning
+ */
+void game_end_win()
+{
+	util_music_play(song_la_la_land, SONG_LA_LA_LAND_LEN);
+}
+
+/*
+ * End the game as loss
+ */
+void game_end_over()
+{
+	util_music_play(song_game_over, SONG_GAME_OVER_LEN);
 }
 
 /*
@@ -153,6 +170,8 @@ void button_pressed(int button)
 		starting_buttons_state[button] = 1;		
 		return;
 	}
+
+	led_blinker_turn_on(util_button_to_blinker(button));
 }
 
 /*
@@ -163,5 +182,35 @@ void button_released(int button)
 	if (!game_is_running()) {
 		starting_buttons_state[button] = 0;
 		return;
+	}
+
+	led_blinker_turn_off(util_button_to_blinker(button));
+	
+	/* Add button to sequence */
+	button_sequence[sequence_ptr] = button;
+
+	/* Check if correct button was released */
+	if (button_sequence[sequence_ptr] == blinker_sequence[sequence_ptr]) {
+		sequence_ptr++;
+				
+		/* Check if all buttons were pressed and released in this round */
+		if (sequence_ptr == round_current) {
+			game_score++;
+			led_counter_set(game_score);
+			
+			/* Check if all rounds were passed */
+			if (round_current == round_count) {
+				//button_interrupts_disable();
+				game_end_win();
+				return;
+			} else {
+				game_next_round();
+			}
+		} else
+			return;		
+	} else {
+		/* Released button doesn't match the blinker sequence - game over */
+		game_end_over();
+		return;		
 	}
 }

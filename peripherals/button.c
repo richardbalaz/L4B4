@@ -39,6 +39,28 @@ void button_init(void (*button_event_pressed_handler)(int),
 }
 
 /*
+ * Enable hardware interrupts for buttons
+ */
+void button_interrupts_enable()
+{
+	BUTTON_GREEN_PORT.BUTTON_GREEN_PIN_CTRL |= PORT_ISC_BOTHEDGES_gc;
+	BUTTON_ORANGE_PORT.BUTTON_ORANGE_PIN_CTRL |= PORT_ISC_BOTHEDGES_gc;
+	BUTTON_YELLOW_PORT.BUTTON_YELLOW_PIN_CTRL |= PORT_ISC_BOTHEDGES_gc;
+	BUTTON_RED_PORT.BUTTON_RED_PIN_CTRL |= PORT_ISC_BOTHEDGES_gc;	
+}
+
+/*
+ * Disable hardware interrupts for buttons
+ */
+void button_interrupts_disable()
+{
+	BUTTON_GREEN_PORT.BUTTON_GREEN_PIN_CTRL &= ~(PORT_ISC_BOTHEDGES_gc);
+	BUTTON_ORANGE_PORT.BUTTON_ORANGE_PIN_CTRL &= ~(PORT_ISC_BOTHEDGES_gc);
+	BUTTON_YELLOW_PORT.BUTTON_YELLOW_PIN_CTRL &= ~(PORT_ISC_BOTHEDGES_gc);
+	BUTTON_RED_PORT.BUTTON_RED_PIN_CTRL &= ~(PORT_ISC_BOTHEDGES_gc);
+}
+
+/*
  * Return 1 if 'button' is pressed or 0 if released
  */
 int button_is_pressed(int button)

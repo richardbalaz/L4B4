@@ -38,4 +38,6 @@ int util_button_to_blinker(int button)
 		case BUTTON_RED:
 			return BLINKER_RED;
 	}
+	
+	return 0;
 }
