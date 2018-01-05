@@ -118,8 +118,7 @@ void game_next_round()
 	game_blink_sequence(led_sequence, round_current);		
 		
 	music_play(music_new_game, MUSIC_NEW_GAME_LEN);
-	music_play(music_la_la_land, MUSIC_LA_LA_LAND_LEN);
-	
+		
 	sei();
 }
 
