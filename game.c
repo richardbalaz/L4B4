@@ -1,7 +1,7 @@
 ﻿#include "include/mcu.h"
 #include "include/game.h"
-#include "include/music.h"
-#include "include/music_songs.h"
+#include "include/util.h"
+#include "include/songs.h"
 
 #include <stdlib.h>
 
@@ -117,7 +117,7 @@ void game_next_round()
 	game_generate_sequence(led_sequence, round_current);
 	game_blink_sequence(led_sequence, round_current);		
 		
-	music_play(music_new_game, MUSIC_NEW_GAME_LEN);
+	music_play(song_new_game, SONG_NEW_GAME_LEN);
 		
 	sei();
 }

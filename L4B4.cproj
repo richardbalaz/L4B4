@@ -158,16 +158,13 @@
     <Compile Include="include\mcu.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\music.h">
+    <Compile Include="include\songs.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="include\music_songs.h">
+    <Compile Include="include\util.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="main.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="music.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="peripherals\button.c">
@@ -192,6 +189,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="peripherals\speaker.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="util.c">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>

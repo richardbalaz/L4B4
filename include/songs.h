@@ -1,8 +1,8 @@
-﻿#ifndef MUSIC_SONGS_H_
-#define MUSIC_SONGS_H_
+﻿#ifndef SONGS_H_
+#define SONGS_H_
 
-#define MUSIC_NEW_GAME_LEN 9
-int music_new_game[MUSIC_NEW_GAME_LEN][2] = {
+#define SONG_NEW_GAME_LEN 9
+int song_new_game[SONG_NEW_GAME_LEN][2] = {
 	{261, 250},
 	{349, 125},
 	{440, 125},
@@ -14,8 +14,8 @@ int music_new_game[MUSIC_NEW_GAME_LEN][2] = {
 	{523, 125},
 };
 
-#define MUSIC_LA_LA_LAND_LEN 15
-int music_la_la_land[MUSIC_LA_LA_LAND_LEN][2] = {
+#define SONG_LA_LA_LAND_LEN 15
+int song_la_la_land[SONG_LA_LA_LAND_LEN][2] = {
 	{277, 350},
 	{369, 350},
 	{415, 350},
@@ -33,4 +33,4 @@ int music_la_la_land[MUSIC_LA_LA_LAND_LEN][2] = {
 	{277, 800},
 };
 
-#endif /* MUSIC_SONGS_H_ */
+#endif /* SONGS_H_ */

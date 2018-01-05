@@ -42,11 +42,11 @@ SUBDIRS :=  \
 C_SRCS +=  \
 ../game.c \
 ../main.c \
-../music.c \
 ../peripherals/button.c \
 ../peripherals/eeprom.c \
 ../peripherals/led.c \
-../peripherals/speaker.c
+../peripherals/speaker.c \
+../util.c
 
 
 PREPROCESSING_SRCS += 
@@ -58,38 +58,38 @@ ASM_SRCS +=
 OBJS +=  \
 game.o \
 main.o \
-music.o \
 peripherals/button.o \
 peripherals/eeprom.o \
 peripherals/led.o \
-peripherals/speaker.o
+peripherals/speaker.o \
+util.o
 
 OBJS_AS_ARGS +=  \
 game.o \
 main.o \
-music.o \
 peripherals/button.o \
 peripherals/eeprom.o \
 peripherals/led.o \
-peripherals/speaker.o
+peripherals/speaker.o \
+util.o
 
 C_DEPS +=  \
 game.d \
 main.d \
-music.d \
 peripherals/button.d \
 peripherals/eeprom.d \
 peripherals/led.d \
-peripherals/speaker.d
+peripherals/speaker.d \
+util.d
 
 C_DEPS_AS_ARGS +=  \
 game.d \
 main.d \
-music.d \
 peripherals/button.d \
 peripherals/eeprom.d \
 peripherals/led.d \
-peripherals/speaker.d
+peripherals/speaker.d \
+util.d
 
 OUTPUT_FILE_PATH +=L4B4.elf
 

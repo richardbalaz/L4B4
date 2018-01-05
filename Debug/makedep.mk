@@ -6,8 +6,6 @@ game.c
 
 main.c
 
-music.c
-
 peripherals\button.c
 
 peripherals\eeprom.c
@@ -15,4 +13,6 @@ peripherals\eeprom.c
 peripherals\led.c
 
 peripherals\speaker.c
+
+util.c
 
