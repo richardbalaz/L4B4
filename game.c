@@ -32,7 +32,7 @@ int starting_buttons_state[BUTTON_COUNT];
  * Start a new game
  */
 void game_start(int difficulty)
-{
+{	
 	button_interrupts_disable();
 	
 	/* Set seed for rand session */
@@ -62,20 +62,14 @@ void game_start(int difficulty)
 			break;			
 	}
 	
-	//free(blinker_sequence);		
-	//blinker_sequence = (int *) malloc(round_count);
-	
 	led_counter_set(game_score);
 	
 	game_generate_sequence(blinker_sequence, round_count);
 	
 	game_next_round();
 	
-	while(1) {
-		
-	}
-	
-	// sleep ??
+	while(1)
+		continue;
 }
 
 /*
@@ -113,11 +107,11 @@ void game_next_round()
 	
 	round_current++;
 
-	//button_sequence = (int *) realloc(button_sequence, round_current);
 	sequence_ptr = 0;
 
 	game_blink_sequence(blinker_sequence, round_current);		
 		
+	_delay_ms(100);
 	util_music_play(song_new_round, SONG_NEW_ROUND_LEN);
 
 	button_interrupts_enable();
@@ -128,7 +122,38 @@ void game_next_round()
  */
 void game_end_win()
 {
-	util_music_play(song_la_la_land, SONG_LA_LA_LAND_LEN);
+	game_running = WON;
+	
+	for (int i = 0; i < 3; i++) {
+		led_counter_set(game_score);
+		_delay_ms(600);
+		led_counter_set(0);
+		_delay_ms(600);
+	}
+	
+	/* Play final song */
+	switch ((rand() % SONGS_COUNT)) {
+		case SONG_LA_LA_LAND:
+			util_music_play(song_la_la_land, SONG_LA_LA_LAND_LEN);
+			break;
+		case SONG_ANOTHER_DAY_OF_SUN:
+			util_music_play(song_another_day_of_sun, SONG_ANOTHER_DAY_OF_SUN_LEN);
+			break;	
+		case SONG_HAVANA:
+			util_music_play(song_havana, SONG_HAVANA_LEN);
+			break;	
+		case SONG_HALLELUJAH:
+			util_music_play(song_hallelujah, SONG_HALLELUJAH_LEN);
+			break;
+		case SONG_CITY_OF_STARS:
+			util_music_play(song_city_of_stars, SONG_CITY_OF_STARS_LEN);
+			break;
+		case SONG_PERFECT:
+			util_music_play(song_perfect, SONG_PERFECT_LEN);
+			break;				
+	}
+	
+	util_mcu_self_destruction();
 }
 
 /*
@@ -136,7 +161,11 @@ void game_end_win()
  */
 void game_end_over()
 {
+	game_running = GAME_OVER;
+	
 	util_music_play(song_game_over, SONG_GAME_OVER_LEN);
+	
+	util_mcu_self_destruction();
 }
 
 /*
@@ -157,7 +186,9 @@ void game_blink_sequence(int *sequence, int len)
 		led_blinker_turn_on(sequence[i]);
 		_delay_ms(750);
 		led_blinker_turn_off(sequence[i]);
-		_delay_ms(750);
+		
+		if (i < (len - 1))
+			_delay_ms(750);
 	}
 }
 
@@ -201,9 +232,13 @@ void button_released(int button)
 			/* Check if all rounds were passed */
 			if (round_current == round_count) {
 				//button_interrupts_disable();
+				_delay_ms(300);
 				game_end_win();
 				return;
 			} else {
+				_delay_ms(300);
+				util_music_play(song_sequence_correct, SONG_SEQUENCE_CORRECT_LEN);
+				
 				game_next_round();
 			}
 		} else
@@ -211,6 +246,5 @@ void button_released(int button)
 	} else {
 		/* Released button doesn't match the blinker sequence - game over */
 		game_end_over();
-		return;		
 	}
 }

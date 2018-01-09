@@ -26,7 +26,7 @@ void setup()
 int main(void)
 {
 	setup();
-
+	
 	while (1) {	
 		if(!game_is_running()) {
 			int start_status = game_is_ready_to_start();
