@@ -3,7 +3,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
-
+#include <avr/sleep.h>
 #include <util/delay.h>
 
 #include "peripherals/include/led.h"
@@ -18,6 +18,9 @@ void setup()
 	led_init();
 	speaker_init();
 	button_init(&button_pressed, &button_released);
+	
+	sei();
+	set_sleep_mode(SLEEP_MODE_STANDBY);	
 }
 
 /*
@@ -28,6 +31,8 @@ int main(void)
 	setup();
 	
 	while (1) {	
+		sleep_mode();
+		
 		if(!game_is_running()) {
 			int start_status = game_is_ready_to_start();
 			

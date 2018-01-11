@@ -7,6 +7,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/sleep.h>
 
 #include <util/delay.h>
 
@@ -68,8 +69,10 @@ void game_start(int difficulty)
 	
 	game_next_round();
 	
-	while(1)
-		continue;
+	while(1) {
+		wdt_on();
+		sleep_mode();
+	}
 }
 
 /*
@@ -197,6 +200,8 @@ void game_blink_sequence(int *sequence, int len)
  */
 void button_pressed(int button)
 {
+	wdt_off();
+
 	if (!game_is_running()) {
 		starting_buttons_state[button] = 1;		
 		return;
@@ -210,6 +215,8 @@ void button_pressed(int button)
  */
 void button_released(int button)
 {
+	wdt_off();
+	
 	if (!game_is_running()) {
 		starting_buttons_state[button] = 0;
 		return;

@@ -64,3 +64,19 @@ void util_mcu_self_destruction()
 		continue;
 	}
 }
+
+void wdt_on()
+{
+	/* Request the access for protected I/O */
+	CPU_CCP = CCP_IOREG_gc;
+	/* Set timer to 8s */
+	WDT.CTRLA = WDT_PERIOD_8KCLK_gc;	
+}
+
+void wdt_off()
+{
+	/* Request the access for protected I/O */
+	CPU_CCP = CCP_IOREG_gc;
+	/* Disable WDT */
+	WDT.CTRLA = WDT_PERIOD_OFF_gc;
+}

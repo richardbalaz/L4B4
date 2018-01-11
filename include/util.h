@@ -16,4 +16,9 @@ int util_button_to_blinker(int button);
 
 void util_mcu_self_destruction();
 
+/* Watchdog timer, TODO: move to peripherals */
+
+void wdt_on();
+void wdt_off();
+
 #endif /* UTIL_H_ */
