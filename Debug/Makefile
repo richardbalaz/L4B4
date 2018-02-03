@@ -46,6 +46,7 @@ C_SRCS +=  \
 ../peripherals/eeprom.c \
 ../peripherals/led.c \
 ../peripherals/speaker.c \
+../peripherals/wdt.c \
 ../util.c
 
 
@@ -62,6 +63,7 @@ peripherals/button.o \
 peripherals/eeprom.o \
 peripherals/led.o \
 peripherals/speaker.o \
+peripherals/wdt.o \
 util.o
 
 OBJS_AS_ARGS +=  \
@@ -71,6 +73,7 @@ peripherals/button.o \
 peripherals/eeprom.o \
 peripherals/led.o \
 peripherals/speaker.o \
+peripherals/wdt.o \
 util.o
 
 C_DEPS +=  \
@@ -80,6 +83,7 @@ peripherals/button.d \
 peripherals/eeprom.d \
 peripherals/led.d \
 peripherals/speaker.d \
+peripherals/wdt.d \
 util.d
 
 C_DEPS_AS_ARGS +=  \
@@ -89,6 +93,7 @@ peripherals/button.d \
 peripherals/eeprom.d \
 peripherals/led.d \
 peripherals/speaker.d \
+peripherals/wdt.d \
 util.d
 
 OUTPUT_FILE_PATH +=L4B4.elf
@@ -105,6 +110,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

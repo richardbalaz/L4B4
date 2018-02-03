@@ -15,6 +15,7 @@
 #include "peripherals/include/button.h"
 #include "peripherals/include/speaker.h"
 #include "peripherals/include/eeprom.h"
+#include "peripherals/include/wdt.h"
 
 int game_running = NOT_RUNNING;
 int game_difficulty;
@@ -40,12 +41,7 @@ void game_start(int difficulty)
 	srand(eeprom_get_next_seed());
 	
 	/* Intro score blinking */
-	for (int i = 0; i < 3; i++) {
-		led_counter_set(15);
-		_delay_ms(600);
-		led_counter_set(0);
-		_delay_ms(600);
-	}
+	util_led_intro();
 	
 	/* Reset variables */
 	game_running = RUNNING;
@@ -69,6 +65,7 @@ void game_start(int difficulty)
 	
 	game_next_round();
 	
+	/* Go in sleep and set reset timeout after each round */
 	while(1) {
 		wdt_on();
 		sleep_mode();
@@ -156,7 +153,7 @@ void game_end_win()
 			break;				
 	}
 	
-	util_mcu_self_destruction();
+	wdt_mcu_reset();
 }
 
 /*
@@ -168,7 +165,7 @@ void game_end_over()
 	
 	util_music_play(song_game_over, SONG_GAME_OVER_LEN);
 	
-	util_mcu_self_destruction();
+	wdt_mcu_reset();
 }
 
 /*
@@ -181,7 +178,7 @@ void game_generate_sequence(int *sequence, int len)
 }
 
 /*
- * Blink the sequence out to LEDs
+ * Blink the LED sequence
  */
 void game_blink_sequence(int *sequence, int len)
 {
@@ -189,10 +186,14 @@ void game_blink_sequence(int *sequence, int len)
 		led_blinker_turn_on(sequence[i]);
 		_delay_ms(750);
 		led_blinker_turn_off(sequence[i]);
+		_delay_ms(750);
 		
-		if (i < (len - 1))
-			_delay_ms(750);
+		/* Don't do the delay after the last LED */
+		//if (i < (len - 1))
+		//	_delay_ms(750);
 	}
+	
+	util_led_sequence_end();
 }
 
 /*

@@ -185,10 +185,16 @@
     <Compile Include="peripherals\include\speaker.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="peripherals\include\wdt.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="peripherals\led.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="peripherals\speaker.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="peripherals\wdt.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="util.c">

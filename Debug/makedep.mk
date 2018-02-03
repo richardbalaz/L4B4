@@ -14,5 +14,7 @@ peripherals\led.c
 
 peripherals\speaker.c
 
+peripherals\wdt.c
+
 util.c
 

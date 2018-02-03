@@ -14,11 +14,7 @@ enum util_music_composition {
 
 int util_button_to_blinker(int button);
 
-void util_mcu_self_destruction();
-
-/* Watchdog timer, TODO: move to peripherals */
-
-void wdt_on();
-void wdt_off();
+void util_led_intro();
+void util_led_sequence_end();
 
 #endif /* UTIL_H_ */

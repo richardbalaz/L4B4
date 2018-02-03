@@ -22,7 +22,8 @@ game.d game.o: .././game.c .././include/mcu.h .././include/game.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\util\delay_basic.h \
  c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
  .././peripherals/include/led.h .././peripherals/include/button.h \
- .././peripherals/include/speaker.h .././peripherals/include/eeprom.h
+ .././peripherals/include/speaker.h .././peripherals/include/eeprom.h \
+ .././peripherals/include/wdt.h
 
 .././include/mcu.h:
 
@@ -81,3 +82,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 .././peripherals/include/speaker.h:
 
 .././peripherals/include/eeprom.h:
+
+.././peripherals/include/wdt.h:

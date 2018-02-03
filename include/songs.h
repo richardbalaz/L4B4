@@ -14,7 +14,7 @@ enum songs {
 
 #define SONGS_COUNT 6
 
-#define SONG_NEW_ROUND_LEN 9
+#define SONG_NEW_ROUND_LEN 8
 const int song_new_round[SONG_NEW_ROUND_LEN][2] PROGMEM = {
 	{261, 250},
 	{349, 125},
@@ -23,7 +23,7 @@ const int song_new_round[SONG_NEW_ROUND_LEN][2] PROGMEM = {
 	{0, 125},
 	{440, 125},
 	{0, 125},
-	{0, 250},
+//	{0, 250},
 	{523, 125},
 };
 

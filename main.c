@@ -17,6 +17,8 @@ void setup()
 {
 	led_init();
 	speaker_init();
+	
+	/* Register handler functions for buttons */
 	button_init(&button_pressed, &button_released);
 	
 	sei();
@@ -30,18 +32,20 @@ int main(void)
 {
 	setup();
 	
-	while (1) {	
+	while (1) {
+		/* Put CPU in sleep immediately, awake by button depressing */
 		sleep_mode();
 		
 		if(!game_is_running()) {
 			int start_status = game_is_ready_to_start();
 			
+			/* Both starting buttons are not pressed */
 			if (start_status == NOT_READY)
 				continue;
 				
 			_delay_ms(BUTTON_START_TIMEOUT);
 			
-			/* Check if start status is ready even after timeout */
+			/* Check if buttons are still pressed after timeout */
 			if (start_status == game_is_ready_to_start()) {
 				switch (start_status) {
 					case READY_EASY:
@@ -54,5 +58,4 @@ int main(void)
 			}
 		}		
 	}
-
 }

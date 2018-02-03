@@ -49,34 +49,32 @@ int util_button_to_blinker(int button)
 }
 
 /*
- * Self-destruct the MCU
+ * Blink all score LEDs three times
  */
-void util_mcu_self_destruction()
+void util_led_intro()
 {
-	/* Request the access for protected I/O */
-	CPU_CCP = CCP_IOREG_gc;
-	
-	/* Set timer to 8ms */
-	WDT.CTRLA = WDT_PERIOD_8CLK_gc;
-	
-	/* Wait for death */
-	while(1) {
-		continue;
+	for (int i = 0; i < 3; i++) {
+		led_counter_set(15);
+		_delay_ms(600);
+		led_counter_set(0);
+		_delay_ms(600);
 	}
 }
 
-void wdt_on()
+/*
+ * Blink all blinker LEDs
+ */
+void util_led_sequence_end()
 {
-	/* Request the access for protected I/O */
-	CPU_CCP = CCP_IOREG_gc;
-	/* Set timer to 8s */
-	WDT.CTRLA = WDT_PERIOD_8KCLK_gc;	
-}
+	led_blinker_turn_on(BLINKER_GREEN);
+	led_blinker_turn_on(BLINKER_RED);
+	led_blinker_turn_on(BLINKER_YELLOW);
+	led_blinker_turn_on(BLINKER_ORANGE);
 
-void wdt_off()
-{
-	/* Request the access for protected I/O */
-	CPU_CCP = CCP_IOREG_gc;
-	/* Disable WDT */
-	WDT.CTRLA = WDT_PERIOD_OFF_gc;
+	_delay_ms(300);
+
+	led_blinker_turn_off(BLINKER_GREEN);
+	led_blinker_turn_off(BLINKER_RED);
+	led_blinker_turn_off(BLINKER_YELLOW);
+	led_blinker_turn_off(BLINKER_ORANGE);
 }
