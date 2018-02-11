@@ -206,11 +206,10 @@ void game_led_effect_update()
 {
 	switch (game_difficulty) {
 		case EASY:
-			if (effect_state == 0) {
+			if (effect_state == 0)
 				effect_state = 8;
-			} else {
+			else
 				effect_state >>= 1;
-			}
 			break;
 		
 		case HARD:
