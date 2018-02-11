@@ -27,9 +27,9 @@ void rtc_init(void (*rtc_event_overflow_handler)())
 void rtc_enable()
 {
 	/* Reset counter */
-	rtc_synchronise(RTC_CNTBUSY_bm);
+	//rtc_synchronise(RTC_CNTBUSY_bm);
 	RTC.CNT = 0;
-	rtc_synchronise(RTC_CNTBUSY_bm);
+	//rtc_synchronise(RTC_CNTBUSY_bm);
 	
 	/* Enable overflow interrupt */
 	RTC.INTCTRL = RTC_OVF_bm;

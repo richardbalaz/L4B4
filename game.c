@@ -113,10 +113,12 @@ void game_next_round()
 
 	sequence_ptr = 0;
 
-	game_blink_sequence(blinker_sequence, round_current);		
-		
+	game_blink_sequence(blinker_sequence, round_current);
+			
 	_delay_ms(100);
 	util_music_play(song_new_round, SONG_NEW_ROUND_LEN);
+	
+	util_led_sequence_end();
 
 	button_interrupts_enable();
 }
@@ -128,9 +130,13 @@ void game_end_win()
 {
 	game_running = WON;
 	
-	/* Keep the LED effect running while playing song */
+	/* Keep the LED effect running while playing song - not possible yet */
+	/* Experiencing glitches with sound, no way to solve it now... */
 	game_led_effect_update();	
-	rtc_enable();
+	rtc_enable();	
+	_delay_ms(2500);	
+	rtc_disable();
+	led_counter_set(15);
 	
 	/* Play final song */
 	switch ((rand() % SONGS_COUNT)) {
@@ -153,8 +159,6 @@ void game_end_win()
 			util_music_play(song_perfect, SONG_PERFECT_LEN);
 			break;				
 	}
-	
-	rtc_disable();
 	
 	wdt_mcu_reset();
 }
@@ -189,14 +193,13 @@ void game_blink_sequence(int *sequence, int len)
 		led_blinker_turn_on(sequence[i]);
 		_delay_ms(750);
 		led_blinker_turn_off(sequence[i]);
-		_delay_ms(750);
+		//_delay_ms(750);
 		
 		/* Don't do the delay after the last LED */
-		//if (i < (len - 1))
-		//	_delay_ms(750);
+		if (i < (len - 1))
+			_delay_ms(750);
 	}
 	
-	util_led_sequence_end();
 }
 
 /*
