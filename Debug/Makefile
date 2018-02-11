@@ -45,6 +45,7 @@ C_SRCS +=  \
 ../peripherals/button.c \
 ../peripherals/eeprom.c \
 ../peripherals/led.c \
+../peripherals/rtc.c \
 ../peripherals/speaker.c \
 ../peripherals/wdt.c \
 ../util.c
@@ -62,6 +63,7 @@ main.o \
 peripherals/button.o \
 peripherals/eeprom.o \
 peripherals/led.o \
+peripherals/rtc.o \
 peripherals/speaker.o \
 peripherals/wdt.o \
 util.o
@@ -72,6 +74,7 @@ main.o \
 peripherals/button.o \
 peripherals/eeprom.o \
 peripherals/led.o \
+peripherals/rtc.o \
 peripherals/speaker.o \
 peripherals/wdt.o \
 util.o
@@ -82,6 +85,7 @@ main.d \
 peripherals/button.d \
 peripherals/eeprom.d \
 peripherals/led.d \
+peripherals/rtc.d \
 peripherals/speaker.d \
 peripherals/wdt.d \
 util.d
@@ -92,6 +96,7 @@ main.d \
 peripherals/button.d \
 peripherals/eeprom.d \
 peripherals/led.d \
+peripherals/rtc.d \
 peripherals/speaker.d \
 peripherals/wdt.d \
 util.d
@@ -110,6 +115,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

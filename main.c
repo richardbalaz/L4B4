@@ -9,6 +9,7 @@
 #include "peripherals/include/led.h"
 #include "peripherals/include/button.h"
 #include "peripherals/include/speaker.h"
+#include "peripherals/include/rtc.h"
 
 /*
  * Setup hardware peripherals
@@ -20,6 +21,10 @@ void setup()
 	
 	/* Register handler functions for buttons */
 	button_init(&button_pressed, &button_released);
+	
+	/* Register handler function for RTC effects */
+	rtc_init(&game_led_effect_update);
+	rtc_set_timeout(LED_EFFECT_TIMEOUT);
 	
 	sei();
 	set_sleep_mode(SLEEP_MODE_STANDBY);	

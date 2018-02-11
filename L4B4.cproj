@@ -182,6 +182,9 @@
     <Compile Include="peripherals\include\led.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="peripherals\include\rtc.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="peripherals\include\speaker.h">
       <SubType>compile</SubType>
     </Compile>
@@ -189,6 +192,9 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="peripherals\led.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="peripherals\rtc.c">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="peripherals\speaker.c">

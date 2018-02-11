@@ -16,6 +16,7 @@
 #include "peripherals/include/speaker.h"
 #include "peripherals/include/eeprom.h"
 #include "peripherals/include/wdt.h"
+#include "peripherals/include/rtc.h"
 
 int game_running = NOT_RUNNING;
 int game_difficulty;
@@ -23,6 +24,8 @@ int game_score;
 
 int round_current;
 int round_count;
+
+int effect_state;
 
 int blinker_sequence[HARD_ROUND_COUNT];
 int button_sequence[HARD_ROUND_COUNT];
@@ -47,6 +50,7 @@ void game_start(int difficulty)
 	game_running = RUNNING;
 	game_score = 0;
 	round_current = 0;
+	effect_state = 0;
 	
 	game_difficulty = difficulty;
 
@@ -124,12 +128,9 @@ void game_end_win()
 {
 	game_running = WON;
 	
-	for (int i = 0; i < 3; i++) {
-		led_counter_set(game_score);
-		_delay_ms(600);
-		led_counter_set(0);
-		_delay_ms(600);
-	}
+	/* Keep the LED effect running while playing song */
+	game_led_effect_update();	
+	rtc_enable();
 	
 	/* Play final song */
 	switch ((rand() % SONGS_COUNT)) {
@@ -152,6 +153,8 @@ void game_end_win()
 			util_music_play(song_perfect, SONG_PERFECT_LEN);
 			break;				
 	}
+	
+	rtc_disable();
 	
 	wdt_mcu_reset();
 }
@@ -194,6 +197,28 @@ void game_blink_sequence(int *sequence, int len)
 	}
 	
 	util_led_sequence_end();
+}
+
+/*
+ * Automatically called handler after timeout, after the game ended
+ */
+void game_led_effect_update()
+{
+	switch (game_difficulty) {
+		case EASY:
+			if (effect_state == 0) {
+				effect_state = 8;
+			} else {
+				effect_state >>= 1;
+			}
+			break;
+		
+		case HARD:
+			effect_state = rand() % 16;
+			break;
+	}
+	
+	led_counter_set(effect_state);
 }
 
 /*

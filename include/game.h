@@ -14,6 +14,8 @@
 
 #define BUTTON_START_TIMEOUT 2000
 
+#define LED_EFFECT_TIMEOUT 180
+
 void game_start(int difficulty);
 void game_next_round();
 void game_generate_sequence(int *sequence, int len);
@@ -44,5 +46,7 @@ enum game_start_status {
 
 void button_pressed(int button);
 void button_released(int button);
+
+void game_led_effect_update();
 
 #endif /* GAME_H_ */

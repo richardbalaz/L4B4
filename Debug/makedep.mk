@@ -12,6 +12,8 @@ peripherals\eeprom.c
 
 peripherals\led.c
 
+peripherals\rtc.c
+
 peripherals\speaker.c
 
 peripherals\wdt.c
